@@ -4,40 +4,53 @@
 import { prismaClient } from "../../config/dbConfig";
 import { HttpException } from "../../exceptions/HttpException";
 import { IUserAttributes, IUserLoginAttributes } from "../../interfaces/auth";
-import { CreateUserVerificator } from "../../verificators/auth/CreateUserVerificator";
-import { IUserServiceProtocol } from "./IUserService";
 
+import { IUserServiceProtocol } from "./IUserService";
+import bcrypt from 'bcrypt';
 
 
 
 export class UserService implements IUserServiceProtocol {
-  private userVerificator: CreateUserVerificator
 
-  constructor(verificator:CreateUserVerificator){
-    this.userVerificator = verificator
+
+  constructor(){
+    
   }
 
   async registerUser(userData: IUserAttributes) {
+    try {
+      const {name,email,password} = userData
+      const salt = bcrypt.genSaltSync(12)
+      const hashPassword = bcrypt.hashSync(password,salt)
+      
+      const newUser = {
+        name,
+        email,
+        password:hashPassword
+      }
 
-    const user = await prismaClient.user.create({
-      data:userData
-    })
-    if(!user){
-      throw new HttpException('unknown error',500)
+      const user = await prismaClient.user.create({
+        data:newUser
+      })
+      if(!user){
+        throw new HttpException('unknown error',500)
+      }
+      return user
+    } catch (error) {
+      console.log('error no registeruser')
     }
-    return user
   
   
   }
 
-  async toAccessUserAccount(user:IUserLoginAttributes){
-    try {
-      const userVerified = await this.userVerificator.startLoginVerification(user)
+//   async toAccessUserAccount(user:IUserLoginAttributes){
+//     try {
+//       const userVerified = await this.userVerificator.startLoginVerification(user)
 
-    } catch (error) {
+//     } catch (error) {
       
-    }  
-}
+//     }  
+// }
 
   async getUser(id:string){
    
@@ -47,6 +60,18 @@ export class UserService implements IUserServiceProtocol {
 
     if(!user) throw new HttpException('user not found',401)
     return user
+
+  }
+  async getUserByEmail(email:string){
+   
+    try {
+      const user = await  prismaClient.user.findUnique({ where:{
+        email:email
+        }})
+        return user
+    } catch (error) {
+      throw new HttpException(error.message,500)
+    }
 
   }
 

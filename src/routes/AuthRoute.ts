@@ -5,9 +5,9 @@ import { CreateUserVerificator } from "../verificators/auth/CreateUserVerificato
 import { IUserControllerProtocol } from "../interfaces/auth";
 
 function getUserController():IUserControllerProtocol{
-    const userVerificator = new CreateUserVerificator()
-    const userService = new UserService(userVerificator)
-    const userController = new UserController(userService)
+    const userService = new UserService()
+    const userVerificator = new CreateUserVerificator(userService)
+    const userController = new UserController(userService,userVerificator)
    
     return userController
 }
@@ -19,6 +19,7 @@ const userController = getUserController()
 const router = Router()
 
 router.post('/createaccount',userController.createUser.bind(userController))
+router.post('/signin',userController.toAccessUser.bind(userController))
 
 
 export default router

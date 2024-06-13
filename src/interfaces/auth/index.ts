@@ -13,10 +13,11 @@ export type IUserLoginAttributes = {
 }
 
 export type ICreateUserVerificator = {
-  passwordMatch(password:string):Boolean,
-  emailAlreadyExists(email:string):Promise<boolean>
-  startLoginVerification(user:IUserLoginAttributes):Promise<void>
+  passwordMatch(userPassword:string,password:string):Promise<boolean>,
+  emailAlreadyExists(email:string):Promise<IUserAttributes | undefined>
+  startLoginVerification(user:IUserLoginAttributes,):Promise<void>
   startRegisterVerification(user:IUserAttributes):Promise<void>
+  fieldsAreFilled(fields:Record<string,unknown>):boolean
 
 }
 
