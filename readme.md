@@ -3,17 +3,18 @@
 
 # FUNCTION REQ
  
-  # REALIZAR CADASTRO, LOGIN E LOGOFF
-  # REALIZAR PAGAMENTO
-  # ADCIONAR AO CARRINHO
-  # BUSCAR SERVIÇOS
-  # CALCULAR PRAZO DE ENTREGA (NEXT VERSIONS)
+  - REALIZAR CADASTRO, LOGIN E LOGOFF
+  - EXIBIR SERVIÇOS
+  - BUSCAR SERVIÇOS
+  - ADCIONAR AO CARRINHO
+  - REALIZAR PAGAMENTO
+  - CALCULAR PRAZO DE ENTREGA (NEXT VERSIONS)
 
 # BUSINESS RULES
 
-  # apenas usuários cadastrados podem realizar pagamento
-  # qualquer usuário pode verificar prazos 
-  # 
+  - apenas usuários cadastrados podem realizar pagamento
+  - qualquer usuário pode verificar prazos 
+  - 
 
 # NO FUNCTIONAL REQ
 
@@ -26,7 +27,14 @@
 
 ### step by step
 
-  # create user routes 
-  # create product routes
-  # create cart routes
-  # create payment routes
+  - create user routes 
+  - create product routes
+  - create cart routes
+  - create payment routes
+
+
+
+
+# Current step
+
+  -add jsonwebtoken and initialize unitary tests
