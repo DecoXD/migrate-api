@@ -47,7 +47,8 @@ export class CreateUserVerificator implements ICreateUserVerificator{
   }
 
   fieldsAreFilled(fields:Record<string,unknown>):boolean{
-    const allFieldsArentFiled = Object.keys(fields).some(() => undefined)
+    const allFieldsArentFiled = Object.values(fields).some((value) => !value)
+    
     
     if(allFieldsArentFiled) throw new HttpException('preencha todos os campos',409)
     return true
@@ -59,6 +60,7 @@ export class CreateUserVerificator implements ICreateUserVerificator{
       this.fieldsAreFilled(user)
       //check if email exists
       const userExists = await this.emailAlreadyExists(user.email)
+      
       if(userExists){
         throw new HttpException('usuário ou senha incorretos register',409)
       }
@@ -70,4 +72,6 @@ export class CreateUserVerificator implements ICreateUserVerificator{
       }
     }
   }
+
+ 
 }

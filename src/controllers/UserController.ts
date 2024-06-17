@@ -11,7 +11,6 @@ export class UserController implements IUserControllerProtocol{
 
   async createUser(req: Request, res: Response): Promise<Response> {
     //implements zod verification 
-
     const {name,email,password} = req.body
 
     const data = {

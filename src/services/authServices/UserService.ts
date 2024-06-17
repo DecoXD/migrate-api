@@ -13,9 +13,7 @@ import bcrypt from 'bcrypt';
 export class UserService implements IUserServiceProtocol {
 
 
-  constructor(){
-    
-  }
+  constructor(){}
 
   async registerUser(userData: IUserAttributes) {
     try {
@@ -43,14 +41,7 @@ export class UserService implements IUserServiceProtocol {
   
   }
 
-//   async toAccessUserAccount(user:IUserLoginAttributes){
-//     try {
-//       const userVerified = await this.userVerificator.startLoginVerification(user)
 
-//     } catch (error) {
-      
-//     }  
-// }
 
   async getUser(id:string){
    
@@ -75,7 +66,7 @@ export class UserService implements IUserServiceProtocol {
 
   }
 
-  async getAllUsers(){
+  async getAllUsers():Promise<void>{
     await prismaClient.user.findMany()
   }
 
@@ -89,5 +80,5 @@ export class UserService implements IUserServiceProtocol {
     })
   }
 
-  async unregisterUser(id:string){}
+  async unregisterUser(id:string):Promise<void>{}
 }
