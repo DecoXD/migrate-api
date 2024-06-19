@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { ICreateUserVerificator, IUserControllerProtocol} from "../interfaces/auth";
-import { IUserServiceProtocol } from "../services/authServices/IUserService";
-import { HttpException } from "../exceptions/HttpException";
+import { ICreateUserVerificator, IUserControllerProtocol} from "../../interfaces/auth";
+import { IUserServiceProtocol } from "../../services/authServices/IUserService";
+import { HttpException } from "../../exceptions/HttpException";
 
 export class UserController implements IUserControllerProtocol{
   
@@ -12,14 +12,13 @@ export class UserController implements IUserControllerProtocol{
   async createUser(req: Request, res: Response): Promise<Response> {
     //implements zod verification 
     const {name,email,password} = req.body
-
     const data = {
       name,email,password
     }
-
     try {
       await this.verificator.startRegisterVerification(data)
-      const newUser = await this.service.registerUser(data)// talvez deixar o hash para outra classe possa ser uma boa ideia
+      const newUser = await this.service.registerUser(data) // talvez deixar o hash para outra classe possa ser uma boa ideia
+      //create a token with jwt 
       return res.status(201).json({user:newUser,message:'Usuário cadastrado com sucesso'})
     } catch (error) {
       if(error instanceof HttpException){
@@ -54,14 +53,13 @@ export class UserController implements IUserControllerProtocol{
     return res
 
 
-    
-
-
   }
 
   async updateUserById(req:Request,res:Response):Promise<Response> {
     return res
   }
+
+  
 
 
 }

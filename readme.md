@@ -37,4 +37,15 @@
 
 # Current step
 
-  -add jsonwebtoken and initialize unitary tests
+  - add jsonwebtoken and initialize unitary tests
+  - testar controller 
+  - adcionar token 
+
+
+# fatoração
+
+  - add iuserserviceprotocol em interface/auth
+
+# current actions
+
+  -register method tested in controller
