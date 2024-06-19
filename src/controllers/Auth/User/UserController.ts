@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
-import { ICreateUserVerificator, IUserControllerProtocol} from "../../interfaces/auth";
-import { IUserServiceProtocol } from "../../services/authServices/IUserService";
-import { HttpException } from "../../exceptions/HttpException";
+import { IUserServiceProtocol } from "../../../services/authServices/IUserService";
+import { HttpException } from "../../../exceptions/HttpException";
+import { IUserControllerProtocol } from "./IUserController";
+import { ICreateUserVerificator } from "../../../verificators/auth/ICreateUserVerificator";
+
 
 export class UserController implements IUserControllerProtocol{
   

@@ -1,5 +1,6 @@
 import { HttpException } from "../../exceptions/HttpException";
-import { ICreateUserVerificator, IUserAttributes, IUserLoginAttributes } from "../../interfaces/auth";
+import { IUserAttributes, IUserLoginAttributes } from "../../interfaces/auth";
+import { ICreateUserVerificator } from "./ICreateUserVerificator";
 import { IUserServiceProtocol } from "../../services/authServices/IUserService";
 import bcrypt from 'bcrypt';
 
