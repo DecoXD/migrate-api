@@ -1,0 +1,7 @@
+# testar objetos do login e register - ok
+# testar o retorno do TOKEN ao se registrar ou logar - pendente
+
+# CRUD de produtos 
+
+ -adcionar produtos
+ 

@@ -1,4 +1,4 @@
-import { IUserAttributes, IUserLoginAttributes } from "../../interfaces/auth"
+import { IUserAttributes } from "../../interfaces/auth"
 
 export type IUserServiceProtocol = {
     registerUser(userData:IUserAttributes):Promise<IUserAttributes>
@@ -8,3 +8,5 @@ export type IUserServiceProtocol = {
     updateUser(id:string,data:IUserAttributes):Promise<void>
     unregisterUser(id:string):Promise<void>  
 }
+
+

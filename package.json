@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watch",
-    "start": " ts-node-dev --inspect --transpile-only --watch node_modules ./src/server/server.ts "
+    "test": "jest --watchAll",
+    "start": " ts-node-dev --inspect --transpile-only --env-file=.env --watch  node_modules ./src/server/server.ts "
   },
   "keywords": [],
   "author": "",

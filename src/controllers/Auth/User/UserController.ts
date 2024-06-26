@@ -1,27 +1,33 @@
 import { Request, Response } from "express";
-import { IUserServiceProtocol } from "../../../services/authServices/IUserService";
+import { IUserServiceProtocol } from "../../../services/auth/IUserService";
 import { HttpException } from "../../../exceptions/HttpException";
-import { IUserControllerProtocol } from "./IUserController";
+import { IUserAuthControllerProtocol } from "./IUserController";
 import { ICreateUserVerificator } from "../../../verificators/auth/ICreateUserVerificator";
+import { ITokenManipulator } from "../../../utilities/interfaces";
 
 
-export class UserController implements IUserControllerProtocol{
+export class UserController implements IUserAuthControllerProtocol{
   
-  constructor( private service:IUserServiceProtocol,private verificator:ICreateUserVerificator){
+  constructor( private service:IUserServiceProtocol, private verificator:ICreateUserVerificator,private tokenManipulator:ITokenManipulator){
     
   }
 
   async createUser(req: Request, res: Response): Promise<Response> {
     //implements zod verification 
+ 
     const {name,email,password} = req.body
     const data = {
       name,email,password
     }
     try {
+      //initialize register verification
       await this.verificator.startRegisterVerification(data)
       const newUser = await this.service.registerUser(data) // talvez deixar o hash para outra classe possa ser uma boa ideia
-      //create a token with jwt 
-      return res.status(201).json({user:newUser,message:'Usuário cadastrado com sucesso'})
+      //create a token
+      const token = await this.tokenManipulator.createToken(newUser.id)
+      
+      return res.status(201).json({user:newUser,message:'Usuário cadastrado com sucesso',token})
+
     } catch (error) {
       if(error instanceof HttpException){
        return res.status(error.statusCode).json({message:error.message})
@@ -33,6 +39,7 @@ export class UserController implements IUserControllerProtocol{
 
   //login fn
   async toAccessUser(req:Request,res:Response):Promise<Response> {
+    
     const {email,password} = req.body
     const data = {
       email,
@@ -40,9 +47,17 @@ export class UserController implements IUserControllerProtocol{
     }
     try {
       // the responsability to verify if email exists and password and if others business rules matches is directed to verificator
+      
       await this.verificator.startLoginVerification(data)
-      //send token to registred email
-      res.status(200).json({message:'ok'})
+     
+      
+       const user = await this.service.getUserByEmail(email)
+       
+      //send token to registred 
+      
+      const token = await this.tokenManipulator.createToken(user.id)
+      
+      return res.status(200).json({message:'ok',token})
       //handling login
     } catch (error) {
       if(error instanceof HttpException){
@@ -52,16 +67,9 @@ export class UserController implements IUserControllerProtocol{
       }
     }
 
-    return res
+
 
 
   }
-
-  async updateUserById(req:Request,res:Response):Promise<Response> {
-    return res
-  }
-
-  
-
 
 }

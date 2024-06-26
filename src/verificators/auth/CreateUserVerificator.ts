@@ -1,7 +1,7 @@
 import { HttpException } from "../../exceptions/HttpException";
 import { IUserAttributes, IUserLoginAttributes } from "../../interfaces/auth";
 import { ICreateUserVerificator } from "./ICreateUserVerificator";
-import { IUserServiceProtocol } from "../../services/authServices/IUserService";
+import { IUserServiceProtocol } from "../../services/auth/IUserService";
 import bcrypt from 'bcrypt';
 
 
@@ -21,23 +21,31 @@ export class CreateUserVerificator implements ICreateUserVerificator{
 
   async passwordMatch(userPassword:string,password:string):Promise<boolean> {
 
-      const passwordMatch = bcrypt.compareSync(password,userPassword)
+     try {
+      const passwordMatch = await bcrypt.compare(password,userPassword)
       
       if(!passwordMatch) throw new HttpException('email or password are incorrect2',401)
       return true
+     } catch (error) {
+        throw new Error(error.message)
+     }
    
   }
 
   async startLoginVerification(user:IUserLoginAttributes): Promise<void> {
     try {
-      if(!user.email || !user.password){
-        throw new HttpException('email or password are incorrect',401)
-      }
+      
+      this.fieldsAreFilled(user)
+      
       //check if user exists
+      
       const userData = await this.emailAlreadyExists(user.email)
-      if(!userData) throw new HttpException('user not found',401)
+      
+      if(!userData) throw new HttpException('email or password are incorrect2',401)
       //check if password match
+      
       await this.passwordMatch(userData.password,user.password)
+      
     } catch (error) {
         if(error instanceof HttpException){
           throw new HttpException(error.message,error.statusCode)

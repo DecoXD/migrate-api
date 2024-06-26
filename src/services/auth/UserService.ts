@@ -41,8 +41,6 @@ export class UserService implements IUserServiceProtocol {
   
   }
 
-
-
   async getUser(id:string){
    
     const user = await  prismaClient.user.findUnique({ where:{
@@ -53,6 +51,7 @@ export class UserService implements IUserServiceProtocol {
     return user
 
   }
+
   async getUserByEmail(email:string){
    
     try {
@@ -66,8 +65,9 @@ export class UserService implements IUserServiceProtocol {
 
   }
 
-  async getAllUsers():Promise<void>{
-    await prismaClient.user.findMany()
+  async getAllUsers(): Promise<IUserAttributes[]> {
+    const user = await prismaClient.user.findMany()
+    return user
   }
 
   async updateUser(id:string,data:IUserAttributes){

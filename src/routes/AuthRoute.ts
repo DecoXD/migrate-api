@@ -1,14 +1,15 @@
 import { Router } from "express";
-import { UserController } from "../controllers/UserController";
-import { UserService } from "../services/authServices/UserService";
+import { UserService } from "../services/auth/UserService";
 import { CreateUserVerificator } from "../verificators/auth/CreateUserVerificator";
-import { IUserControllerProtocol } from "../interfaces/auth";
+import { IUserAuthControllerProtocol } from "../controllers/Auth/User/IUserController";
+import { UserController } from "../controllers/Auth/User/UserController";
+import { TokenManipulator } from "../utilities/Token";
 
-function getUserController():IUserControllerProtocol{
+function getUserController():IUserAuthControllerProtocol{
     const userService = new UserService()
     const userVerificator = new CreateUserVerificator(userService)
-    const userController = new UserController(userService,userVerificator)
-   
+    const tokenManipulator = new TokenManipulator()
+    const userController = new UserController(userService,userVerificator,tokenManipulator)
     return userController
 }
 
