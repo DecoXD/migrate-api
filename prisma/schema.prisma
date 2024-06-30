@@ -14,30 +14,35 @@ model user {
   password String
 }
 
-model Product {
-  id          String          @id @default(uuid())
+model cart {
+  id          String        @id
+  cartproduct cartproduct[]
+}
+
+model cartproduct {
+  id         String  @id   @default(uuid())
+  productId  String
+  quanty     Int
+  cartId     String?
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) 
+  cart       cart?    @relation(fields: [cartId], references: [id], map: "CartProduct_cartId_fkey")
+  product    product  @relation(fields: [productId], references: [id], map: "CartProduct_productId_fkey")
+
+  @@index([cartId], map: "CartProduct_cartId_fkey")
+  @@index([productId], map: "CartProduct_productId_fkey")
+}
+
+model product {
+  id          String  @id   @default(uuid())
   name        String
   price       Int
-  term        String
   category    String
-  discount    Int             @default(0)
-  created_at  DateTime?       @default(now()) @db.Timestamptz(6)
-  updatedAt   DateTime @updatedAt @db.Timestamptz(6)
-  CartProduct CartProduct[]
-}
-
-model CartProduct {
-  id        String  @id @default(uuid())
-  productId String
-  product   Product @relation(fields: [productId], references: [id])
-  quanty    Int
-  Cart      Cart?   @relation(fields: [cartId], references: [id])
-  created_at  DateTime?       @default(now()) @db.Timestamptz(6)
-  updatedAt    DateTime @updatedAt @db.Timestamptz(6)
-  cartId    String?
-}
-
-model Cart {
-  id       String        @id @default(uuid())
-  products CartProduct[]
+  created_at  DateTime      @default(now())
+  discount    Int           @default(0)
+  discription String
+  parcels     Int           @default(1)
+  stock       Int           @default(1)
+  updated_at  DateTime      @default(now())
+  cartproduct cartproduct[]
 }

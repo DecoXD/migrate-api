@@ -3,7 +3,5 @@ node_modules
 ./src/mock
 *.spec.ts
 *.mock.ts
-product
-Products
-cart
+
 # Keep environment variables out of version control

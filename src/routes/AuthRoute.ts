@@ -5,7 +5,7 @@ import { IUserAuthControllerProtocol } from "../controllers/Auth/User/IUserContr
 import { UserController } from "../controllers/Auth/User/UserController";
 import { TokenManipulator } from "../utilities/Token";
 
-function getUserController():IUserAuthControllerProtocol{
+function getUserController():IUserAuthControllerProtocol{ // retirar isso daqui imediatamente
     const userService = new UserService()
     const userVerificator = new CreateUserVerificator(userService)
     const tokenManipulator = new TokenManipulator()

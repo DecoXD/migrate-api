@@ -3,7 +3,7 @@
 /*eslint disable */
 import { prismaClient } from "../../config/dbConfig";
 import { HttpException } from "../../exceptions/HttpException";
-import { IUserAttributes, IUserLoginAttributes } from "../../interfaces/auth";
+import { IUserAttributes } from "../../interfaces/auth";
 
 import { IUserServiceProtocol } from "./IUserService";
 import bcrypt from 'bcrypt';
