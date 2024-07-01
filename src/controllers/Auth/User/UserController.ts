@@ -14,18 +14,17 @@ export class UserController implements IUserAuthControllerProtocol{
 
   async createUser(req: Request, res: Response): Promise<Response> {
     //implements zod verification 
- 
     const {name,email,password} = req.body
     const data = {
       name,email,password
     }
     try {
       //initialize register verification
+      
       await this.verificator.startRegisterVerification(data)
       const newUser = await this.service.registerUser(data) // talvez deixar o hash para outra classe possa ser uma boa ideia
       //create a token
       const token = await this.tokenManipulator.createToken(newUser.id)
-      
       return res.status(201).json({user:newUser,message:'Usuário cadastrado com sucesso',token})
 
     } catch (error) {
@@ -39,24 +38,17 @@ export class UserController implements IUserAuthControllerProtocol{
 
   //login fn
   async toAccessUser(req:Request,res:Response):Promise<Response> {
-    
     const {email,password} = req.body
     const data = {
       email,
       password
     }
     try {
-      // the responsability to verify if email exists and password and if others business rules matches is directed to verificator
-      
-      await this.verificator.startLoginVerification(data)
-     
-      
+      // the responsability to verify if email exists and password and if others business rules matches is directed to verificator      
+      await this.verificator.startLoginVerification(data)     
        const user = await this.service.getUserByEmail(email)
-       
-      //send token to registred 
-      
+      //send token to registred    
       const token = await this.tokenManipulator.createToken(user.id)
-      
       return res.status(200).json({message:'ok',token})
       //handling login
     } catch (error) {

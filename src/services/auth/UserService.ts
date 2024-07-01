@@ -18,8 +18,11 @@ export class UserService implements IUserServiceProtocol {
   async registerUser(userData: IUserAttributes) {
     try {
       const {name,email,password} = userData
+     
       const salt = bcrypt.genSaltSync(12)
-      const hashPassword = bcrypt.hashSync(password,salt)
+      const hashPassword = bcrypt.hashSync(password,salt)// refatorar 
+     
+
       
       const newUser = {
         name,
