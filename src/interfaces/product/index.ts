@@ -5,4 +5,5 @@ export type ProductAttributes = {
   discount:number;
   stock?:number;
   category:string;
+  userId?:string  
 }

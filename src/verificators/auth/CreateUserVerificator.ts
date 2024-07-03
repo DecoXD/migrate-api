@@ -3,6 +3,7 @@ import { IUserAttributes, IUserLoginAttributes } from "../../interfaces/auth";
 import { ICreateUserVerificator } from "./ICreateUserVerificator";
 import { IUserServiceProtocol } from "../../services/auth/IUserService";
 import bcrypt from 'bcrypt';
+import { allFieldsAreFilled } from "../../utilities/checkFields";
 
 
 export class CreateUserVerificator implements ICreateUserVerificator{
@@ -35,7 +36,7 @@ export class CreateUserVerificator implements ICreateUserVerificator{
   async startLoginVerification(user:IUserLoginAttributes): Promise<void> {
     try {
       
-      this.fieldsAreFilled(user)
+      allFieldsAreFilled(user)
       
       //check if user exists
       
@@ -55,18 +56,12 @@ export class CreateUserVerificator implements ICreateUserVerificator{
     }
   }
 
-  fieldsAreFilled(fields:Record<string,unknown>):boolean{
-    const allFieldsArentFiled = Object.values(fields).some((value) => !value)
-    
-    
-    if(allFieldsArentFiled) throw new HttpException('preencha todos os campos',409)
-    return true
-  }
+
 
   async startRegisterVerification(user:IUserAttributes): Promise<void> {
     try {
       //check if all fields are filled
-      this.fieldsAreFilled(user)
+      allFieldsAreFilled(user)
       //check if email exists
       const userExists = await this.emailAlreadyExists(user.email)
       

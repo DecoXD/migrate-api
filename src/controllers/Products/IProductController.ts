@@ -3,7 +3,7 @@ import { Request, Response } from "express"
 
 export type IProductControllerProtocol = {
   getAllProducts(req: Request, res: Response):Promise<Response>
-  getProductById(req:Request,res:Response):Promise<void>
+  getProductById(req:Request,res:Response):Promise<Response>
   addProduct(req:Request,res:Response):Promise<Response>
   updateProductData(req:Request,res:Response):Promise<void>
   deleteProduct(req:Request,res:Response):Promise<void>

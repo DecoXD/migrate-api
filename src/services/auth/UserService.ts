@@ -44,12 +44,11 @@ export class UserService implements IUserServiceProtocol {
   
   }
 
-  async getUser(id:string){
+  async getUserById(id:string):Promise<IUserAttributes >{
    
     const user = await  prismaClient.user.findUnique({ where:{
       id:id
     }})
-
     if(!user) throw new HttpException('user not found',401)
     return user
 

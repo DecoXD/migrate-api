@@ -18,7 +18,7 @@ export class UserServiceMock implements IUserServiceProtocol{
    
   }
 
-  async getUser(id: string): Promise<void | IUserAttributes> {
+  async getUserById(id: string): Promise< IUserAttributes> {
     const users = await this.getAllUsers()
 
     for(let i = 0; i < users.length;i++){

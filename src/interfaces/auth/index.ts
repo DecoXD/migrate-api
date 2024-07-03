@@ -6,6 +6,7 @@ export type IUserAttributes = {
     email:string,
     password:string,
     id?:string
+    role?:string
 }
 export type IUserLoginAttributes = {
     email:string,
