@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 
 import { IProductServiceProtocol } from "../../services/product/IProductService";
 import { IProductControllerProtocol } from "./IProductController";
-import { IProductVerificatorProtocol } from "../../verificators/product/IProductVerificatorProtocolt";
+import { IProductVerificatorProtocol } from "../../utilities/verificators/product/IProductVerificatorProtocolt";
 import { ITokenManipulator } from "../../utilities/interfaces";
 import { HttpException } from "../../exceptions/HttpException";
 
@@ -21,7 +21,7 @@ export class ProductController implements IProductControllerProtocol{
       const productList = await this.service.getAll()
       return res.status(201).json({productList})
     } catch (error) {
-      
+      console.log('erro no getallproducts')
     }
     return  
   }
@@ -68,13 +68,27 @@ export class ProductController implements IProductControllerProtocol{
     return  
   }
 
-  deleteProduct(req: Request, res: Response): Promise<void> {
-    return 
+  async deleteProduct(req: Request, res: Response): Promise<Response> {
+    try {
+      const {id} = req.body
+      await this.service.deleteProduct(id)
+      return res.status(201).json({message:'produto deletado com sucesso'})
+    } catch (error) {
+      return res.status(500).json({message:error.message})
+    }
   }
 
 
-  updateProductData(req: Request, res: Response): Promise<void> {
-    return
+  async updateProductData(req: Request, res: Response): Promise<Response> {
+    const data = req.body
+    const {id} = req.params
+    try {
+      await this.service.updateProduct(id,data)
+      return res.status(201).json({message:'item atualizado com sucesso'})
+    } catch (error) {
+      return res.status(500).json(error.message)
+      
+    }
   }
 
  
